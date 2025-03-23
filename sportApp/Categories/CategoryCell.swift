@@ -7,7 +7,14 @@
 
 import UIKit
 
+protocol CategoryCellDelegate: AnyObject {
+    func didSelectSubcategory(_ value: String, for category: String)
+}
+
 final class CategoryCell: UITableViewCell {
+    
+    weak var delegate: CategoryCellDelegate?
+    var sectionCategoryName: String = ""
     
     private lazy var subcategories: [String] = []
     
@@ -42,8 +49,9 @@ final class CategoryCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with subcategories: [String]) {
+    func configure(with subcategories: [String], categoryName: String) {
         self.subcategories = subcategories
+        self.sectionCategoryName = categoryName
         collectionView.reloadData()
     }
     
@@ -62,30 +70,9 @@ final class CategoryCell: UITableViewCell {
     }
     
     private func categorySelected(subcategory: String) {
-//        guard let parentVC = self.parentViewController as? MainViewController else { return }
-//
-//        let title = parentVC.data.first(where: { $0.subType.contains(subcategory) })?.headerName ?? "Unknown"
-//
-//            switch title {
-//            case "Men":
-//                productsCategorised = products.filter { $0.category == "men's clothing" }
-//            case "Women":
-//                productsCategorised = products.filter { $0.category == "women's clothing" }
-//            case "Electronics":
-//                productsCategorised = products.filter { $0.category == "electronics" }
-//            case "Jewelry":
-//                productsCategorised = products.filter { $0.category == "jewelery" }
-//            default:
-//                print("No matching category")
-//            }
-
-//            let vc = ShopViewController()
-//            vc.products = productsCategorised
-//            vc.hidesBottomBarWhenPushed = true
-//            parentVC.navigationController?.pushViewController(vc, animated: true)
-//            parentVC.navigationController?.isNavigationBarHidden = false
-//            parentVC.navigationItem.backButtonTitle = ""
-        }
+        delegate?.didSelectSubcategory(subcategory, for: sectionCategoryName)
+    }
+    
     }
 
 

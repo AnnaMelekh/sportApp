@@ -11,6 +11,8 @@ class ExerciseViewController: UIViewController, UITableViewDataSource, UITableVi
 
     let tableView = UITableView()
     var exercises: [SportsModel] = []
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()

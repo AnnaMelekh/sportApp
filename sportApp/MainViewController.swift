@@ -50,6 +50,8 @@ final class MainViewController: UIViewController {
     var selectedMuscle: String?
     var selectedExercise: String?
     var selectedLevel: String?
+    var selectedCategory: String?
+    var selectedValue: String?
     
     private lazy var goButton: UIButton = {
         let button = UIButton(type: .system)
@@ -166,7 +168,7 @@ private extension MainViewController {
     }
     
     @objc private func goButtonTapped() {
-        networkService.performRequest(name: selectedExercise,
+        networkService.performRequest(type: selectedExercise,
                                              muscle: selectedMuscle,
                                              difficulty: selectedLevel) { _ in
                }
@@ -230,8 +232,11 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as? CategoryCell else {
                 return UITableViewCell()
             }
-            let subcategories = data[indexPath.section].subType
-            cell.configure(with: subcategories)
+        let subcategories = data[indexPath.section].subType
+        let categoryName = data[indexPath.section].headerName
+
+        cell.delegate = self
+        cell.configure(with: subcategories, categoryName: categoryName)
             return cell
     }
     
@@ -308,5 +313,32 @@ extension MainViewController: NetworkServiceDelegate {
     }
 }
 
+extension MainViewController: CategoryCellDelegate {
+    func didSelectSubcategory(_ value: String, for category: String) {
+        selectedCategory = category
+        selectedValue = value
+        if category.lowercased().contains("muscle") {
+            networkService.performRequest(muscle: value) { [weak self] result in
+                self?.openExerciseVC(with: result)
+            }
+        } else if category.lowercased().contains("type") {
+            networkService.performRequest(type: value) { [weak self] result in
+                self?.openExerciseVC(with: result)
+            }
+        } else if category.lowercased().contains("difficulty") {
+            networkService.performRequest(difficulty: value) { [weak self] result in
+                self?.openExerciseVC(with: result)
+            }
+        }
+    }
+    func openExerciseVC(with data: [SportsModel]) {
+        DispatchQueue.main.async {
+            let vc = ExerciseViewController()
+            vc.exercises = data
+            vc.modalPresentationStyle = .popover
+            self.present(vc, animated: true)
+        }
+    }
+}
 
 #Preview { MainViewController() }
