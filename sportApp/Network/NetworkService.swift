@@ -25,7 +25,7 @@ struct NetworkService {
                         difficulty: String? = nil,
                         completion: @escaping ([SportsModel]) -> Void
                     ) {
-                        var components = URLComponents(string: "https://api.api-ninjas.com/v1/exercise")
+                        var components = URLComponents(string: "https://api.api-ninjas.com/v1/exercises")
                         var queryItems: [URLQueryItem] = []
 
                         if let name = name, !name.isEmpty {
@@ -49,6 +49,7 @@ struct NetworkService {
                         }
         
         var request = URLRequest(url: url)
+        print(url)
 
         request.setValue("37dzcC9ewolb+jdrMMi3ZQ==rm21imKoXto6vJJd", forHTTPHeaderField: "X-Api-Key")
         let session = URLSession(configuration: .default)
@@ -73,25 +74,12 @@ struct NetworkService {
     
     
     func parseJSON(_ sportsData: Data) -> [SportsModel]? {
-        let decoder = JSONDecoder()
         
+        let decoder = JSONDecoder()
+
         do {
-                let decodedData = try decoder.decode([SportsData].self, from: sportsData)
-                
-                let sportsArray = decodedData.map { sport in
-                    SportsModel(
-                        name: sport.name,
-                        type: sport.type,
-                        muscle: sport.muscle,
-                        equipment: sport.equipment,
-                        difficulty: sport.difficulty,
-                        instructions: sport.instructions
-                    )
-                }
-                
-                print(sportsArray)
-                return sportsArray
-            
+            let decodedData = try decoder.decode([SportsModel].self, from: sportsData)
+            return decodedData
         } catch {
             print("Ошибка декодирования: \(error)")
             return nil
