@@ -14,23 +14,15 @@ struct DataModel {
     var image: String
 }
 
+let exerciseTypes = ["cardio", "olympic_weightlifting", "plyometrics", "powerlifting", "strength", "stretching", "strongman"]
+
+let muscleGroups = ["abdominals", "abductors", "adductors", "biceps", "calves", "chest", "forearms", "glutes", "hamstrings", "lats", "lower_back", "middle_back", "neck", "quadriceps", "traps", "triceps"]
+
+let difficultyLevels = ["beginner", "intermediate", "expert"]
+
+
 var categories = [
-    DataModel(
-        headerName: "Exercise Type",
-        subType: ["cardio", "olympic_weightlifting", "plyometrics", "powerlifting", "strength", "stretching", "strongman"],
-        isExpandable: false,
-        image: "exercise"
-    ),
-    DataModel(
-        headerName: "Muscle Group",
-        subType: ["abdominals", "abductors", "adductors", "biceps", "calves", "chest", "forearms", "glutes", "hamstrings", "lats", "lower_back", "middle_back", "neck", "quadriceps", "traps", "triceps"],
-        isExpandable: false,
-        image: "muscle"
-    ),
-    DataModel(
-        headerName: "Difficulty Level",
-        subType: ["beginner", "intermediate", "expert"],
-        isExpandable: false,
-        image: "difficulty"
-    )
+    DataModel(headerName: "Exercise Type", subType: exerciseTypes, isExpandable: false, image: "exercise"),
+    DataModel(headerName: "Muscle Group", subType: muscleGroups, isExpandable: false, image: "muscle"),
+    DataModel(headerName: "Difficulty Level", subType: difficultyLevels, isExpandable: false, image: "difficulty")
 ]

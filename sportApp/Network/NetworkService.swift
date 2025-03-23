@@ -19,22 +19,34 @@ struct NetworkService {
     var delegate: NetworkServiceDelegate?
 
 
-    func performRequest(name: String? = nil, ingredient: String? = nil, completion: @escaping ([SportsModel]) -> Void) {
-        var components = URLComponents(string: "https://api.api-ninjas.com/v1/cocktail")
-           var queryItems: [URLQueryItem] = []
-           
-           if let name = name, !name.isEmpty {
-               queryItems.append(URLQueryItem(name: "name", value: name))
-           } else if let ingredient = ingredient, !ingredient.isEmpty {
-               queryItems.append(URLQueryItem(name: "ingredients", value: ingredient))
-           }
-           
-           components?.queryItems = queryItems
-           
-           guard let url = components?.url else {
-               print("Invalid URL")
-               return
-           }
+    func performRequest(name: String? = nil,
+                        type: String? = nil,
+                        muscle: String? = nil,
+                        difficulty: String? = nil,
+                        completion: @escaping ([SportsModel]) -> Void
+                    ) {
+                        var components = URLComponents(string: "https://api.api-ninjas.com/v1/exercise")
+                        var queryItems: [URLQueryItem] = []
+
+                        if let name = name, !name.isEmpty {
+                            queryItems.append(URLQueryItem(name: "name", value: name))
+                        }
+                        if let type = type, !type.isEmpty {
+                            queryItems.append(URLQueryItem(name: "type", value: type))
+                        }
+                        if let muscle = muscle, !muscle.isEmpty {
+                            queryItems.append(URLQueryItem(name: "muscle", value: muscle))
+                        }
+                        if let difficulty = difficulty, !difficulty.isEmpty {
+                            queryItems.append(URLQueryItem(name: "difficulty", value: difficulty))
+                        }
+
+                        components?.queryItems = queryItems
+
+                        guard let url = components?.url else {
+                            print("Invalid URL")
+                            return
+                        }
         
         var request = URLRequest(url: url)
 
